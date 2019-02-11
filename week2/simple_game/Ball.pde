@@ -1,43 +1,44 @@
 class Ball {
-  float dx = random(1, 2);
-  float dy = random(1, 2);
 
-  PVector pos;
-  PVector speed;
-  int s;
+  float x = width/2;
+  float y = 550;
+  float dx = 10;
+  float dy = 10;
   
+  int r;
+
   Ball() {
-    s = 30;
-    pos = new PVector(width/2,550);
-    speed = new PVector (2,2);
+    r = 15;
 
   }
 
   void update() {
-    if (pos.x > width || pos.x < 0) {
-      speed.x = - speed.x;
+    if (x > width || x < 0) {
+      dx = -dx;
     }
 
-    if (pos.y > height || pos.y < 0) {
-      speed.y = -speed.y;
+    if (y > height || y < 0) {
+      dy = -dy;
     }
 
-    pos.x += speed.x;
-    pos.y += speed.y;
+    x += dx;
+    y += dy;
   }
 
   void show() {
     noStroke();
     fill(255, 0, 0);
-    ellipse(pos.x, pos.y, s, s);
+    ellipse(x, y, r*2, r*2);
   }
-  
-  void hitCheck(){
-  float d = dist (paddle.pos.x, paddle.pos.y, pos.x, pos.y);
-    if(d < 20){
-    pos.x += speed.x;
-    pos.y += speed.y;
+
+  void hitCheck() {
+     //if (x < paddle.pos.x + paddle.w/2 && x < paddle.pos.x - paddle.w/2 && y - r < paddle.pos.y+ paddle.h/2 && y + r > paddle.pos.y - paddle.h/2){
+     //  dy *= -1;
+     //}
+     
+     if (dist(x,y,paddle.pos.x, paddle.pos.y)<r){
+     dy *= -1;
+     }
     }
-  
+
   }
-}

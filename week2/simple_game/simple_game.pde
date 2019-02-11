@@ -1,24 +1,31 @@
+int rows = 10;
+int cols = 20;
+float w, h;
+
 Paddle paddle;
-Block blocks;
 Ball ball;
+BlockSystem bs;
 
 
-void setup(){
-  size(600,600);
+void setup() {
+  size(600, 600);
   paddle = new Paddle();
-  blocks = new Block();
+
   ball = new Ball();
+
+  bs = new BlockSystem();
 }
 
-void draw(){
+void draw() {
   background(255);
-  
-  
+
+
+  bs.addBlock();
+  //bs.blockStatus();
+
   paddle.display();
   paddle.update();
-  
-  blocks.show();
-  
+
   ball.show();
   ball.update();
   ball.hitCheck();
