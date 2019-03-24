@@ -1,0 +1,34 @@
+3 levels
+
+when you finish all the blocks, the level changes.
+
+how would we store the information of what level we're on?
+
+int level = ol
+level ++;
+
+if (level < MAX) {
+	level ++;
+}
+
+// if there is a gameover scene when all life is used up
+
+int level = ol
+level ++;
+
+if (level < MAX) {
+	level ++;
+}
+
+if (lives <= 0){
+	level = 0;
+}
+
+// if there is a object that allows the player to jump 3 levels ahead
+
+if (MAX - level > 3){
+	level += 3;
+}
+
+
+

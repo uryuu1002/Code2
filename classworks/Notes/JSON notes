@@ -1,0 +1,24 @@
+JSON - javascript object notation
+
+var bybble = {
+	x: 100,
+	y: 200,
+	diameter: 50,
+	label: 'bubble!',
+};
+
+or 
+
+// multi-demensional system to store datas
+// bubble can have a "position" that stores "x" and "y"
+
+var bubble = {
+	position:{
+	x: 100,
+	y: 200.
+	}
+	diameter: 50,
+	label: 'bubble!',
+};
+
+

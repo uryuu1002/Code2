@@ -1,0 +1,26 @@
+strings = "1,2,3,4"
+
+csv:
+posx | posy | dia  | label | connect
+160  | 103  | 43.2 | Happy | sad, angry
+372  | 137  | 52.4 | Sad   | other possible connection
+
+XML - Extensible Markup language; looks simialr to HTML
+
+<bubbles>
+
+	<bubble>
+		<position x = "160" y = "103"/>
+		<diameter>43.19838</diameter>
+		<label>Happy</label>
+	</bubble>
+
+	<bubble>
+		<position x = "372" y = "137"/>
+		<diameter>52.42526</diameter>
+		<label>Sad</label>
+	</bubble>
+
+</bubbles>
+
+
