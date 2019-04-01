@@ -1,0 +1,103 @@
+// state = screen
+// text to display for each screen   (state representation)
+// options to choose for each screen (state transitions)
+
+// string for each text
+// string for each option - corresponds to a keypress
+
+// with class
+
+int state = 0;
+
+JSONArray values;
+
+String[] arrayOfImageFilenames = new String [3];
+PImage[] arrayOfPImages = new PImage [arrayOfImageFilenames.length];
+
+String[] descriptions = {
+  "You wake up in Code 2 class and don't know what is going on", 
+  "your eyelids feel so heavy, and you fail to wake up", 
+  "you feel enlightened by the answer, but still fall asleep"
+};
+
+String[][] options = {
+  {"try to wake up", "ask a question"}, 
+  {"you sleep"}, 
+  {"struggle to stay awake", "enjoy the sweet surrender of sleep"}
+};
+
+int[][] optionTargets = {
+  {1, 2}, 
+  {0}, 
+  {1, 0}, 
+};
+
+Scene[] scenes = new Scene[descriptions.length];
+
+void setup() {
+  size(600, 600);
+
+  values = new JSONArray();
+
+  for (int i = 0; i < arrayOfImageFilenames.length; i++) {
+    arrayOfImageFilenames[i] = i + ".jpg";
+    arrayOfPImages[i] = loadImage(arrayOfImageFilenames[i]);
+  }
+
+  for (int i = 0; i < scenes.length; i++) {
+    scenes[i] = new Scene(descriptions[i], options[i], optionTargets[i]);
+  }
+
+
+  for (int i = 0; i < scenes.length; i++) {
+
+    JSONObject quiz = new JSONObject();
+
+    quiz.setInt("scene", i);
+    quiz.setString("descriptions", descriptions[i]);
+    quiz.setString("options", options[i][state]);
+    quiz.setInt("optionTargets", optionTargets[i][state]);
+
+    values.setJSONObject(i, quiz);
+  }
+
+  saveJSONArray(values, "data/new.json");
+}
+
+void draw() {
+  background(255);
+  textSize(40);
+  fill(0);
+  text(scenes[state].displayText, 40, 40, 450, 300);
+
+  textSize(24);
+  int i = 0;
+  for (String option : scenes[state].options) {
+    text(option, 40, 450 + i * 50);
+    i++;
+    for (int k = 0; k < arrayOfImageFilenames.length; k++) {
+      float prop = arrayOfPImages[k].width/ arrayOfPImages[k].height;
+      image (arrayOfPImages[state], width/2, height/2, 200, 100 * prop);
+    }
+  }
+}
+
+void keyPressed() {  
+  for (int i = 0; i < scenes[state].options.length; i++) {
+    if (keyCode - 49 == i) {
+      state = scenes[state].optionTargets[i];
+    }
+  }
+}
+
+class Scene {
+  String displayText;
+  String[] options;
+  int[] optionTargets;
+
+  Scene(String txt, String[] opt, int[] targets) {
+    displayText = txt;
+    options = opt;
+    optionTargets = targets;
+  }
+}
