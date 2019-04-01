@@ -113,6 +113,9 @@ void draw() {
 
 void changeState() {
   whichLevel++;
+  if (whichLevel >5){
+    whichLevel = 0;
+  }
 }
 
 void keyPressed() {
