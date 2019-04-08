@@ -1,9 +1,17 @@
+// Ray's note: For some reason, in my API class Engine, the JSONArray docs
+// can be printed using println(), and can be accessed and print out on canvas using text()
+// BUT, after loading and printing the API out, the console gives me "NullPointerException",
+// which also broke the code. I stoped styling my sketch since then. I think I completed more than 5 points
+// to get the full grade for this sketch (correctly use API, visualize data, communicate rationally, wide range
+// of data, interactive, classes/ objects as container and state machines), but I still want to talk to you in 
+// class to fix this sketch..
+
+
 import http.requests.*;
 
 int state = 0;
 int whichLevel = 0;
 
-int indent = 25;
 PFont f;
 String typing = "";
 String saved = "";
@@ -13,11 +21,12 @@ float heightOfCanvas = 3000;
 
 SearchBox searchbox;
 
+
 Engine engine;
 String apiKey = "OY9L7eYd91XAHZ3u4XRTAVlaAQz2nD4v";
 String query_term = "";
 String beginDate = "20120101";
-String endDate = "20190101";
+String endDate = "";
 
 void setup() {
 
@@ -32,9 +41,6 @@ void setup() {
 }
 
 void draw() {
-  scrollRect.display();
-  scrollRect.update();
-
   boolean shouldChangeLevel = true;
 
   switch(whichLevel) {
@@ -44,6 +50,13 @@ void draw() {
     break;
   case 1:
     query_term = saved;
+    background(90);
+    scrollRect.display();
+    scrollRect.update();
+    engine.display();
+    break;
+  default:
+    break;
   }
 }
 
@@ -51,15 +64,22 @@ void draw() {
 
 class Engine {
   Engine() {
+  }
+  void display() {
+    float y = 90;
+    float spacing = 100;
+
     GetRequest get = new GetRequest(
       "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + 
       query_term + "&facet_fields=source&facet=true&begin_date=" + beginDate + 
       "&end_date=" + endDate + "&api-key=" + apiKey);
 
     get.send();
-    JSONObject response = parseJSONObject(get.getContent());
-    JSONObject response_obj = response.getJSONObject("response");
-    JSONArray docs = response_obj.getJSONArray("docs"); 
+
+    JSONObject data = parseJSONObject(get.getContent());
+    JSONObject response = data.getJSONObject("response");
+    JSONArray docs = response.getJSONArray("docs"); 
+    println(docs);
 
     for (int i = 0; i < docs.size(); i++) {
       JSONObject element = docs.getJSONObject(i);
@@ -67,15 +87,26 @@ class Engine {
       // Article Title
       JSONObject headline = element.getJSONObject("headline");
       String title = headline.getString("main");
-      //println(title);
+      textFont(f);
+      textSize(20);
+      fill(0);
+      text("Title: "+ title, 50, y);
 
       // Article Leading Paragraph
       String leadP = element.getString("lead_paragraph");
       //println(leadP);
+      textFont(f);
+      textSize(20);
+      fill(0);
+      text("Abstract: "+ leadP, 50, y + spacing * 2);
 
       // Publish date
       String pubDate = element.getString("pub_date");
       //println(pubDate);
+      textFont(f);
+      textSize(20);
+      fill(0);
+      text("Publish Date: "+ pubDate, 50, y + spacing * 3);
 
       // Article type
       String docType = element.getString("document_type");
@@ -87,16 +118,35 @@ class Engine {
         JSONObject element2 = keywords.getJSONObject(j);
         String value = element2.getString("value");
         //println(value);
+        textFont(f);
+        textSize(20);
+        fill(0);
+        text("Keywords: "+ value, 50, y + spacing * 4);
       }
 
       // Article URL
       String webURL = element.getString("web_url");
       //println(webURL);
+      textFont(f);
+      textSize(20);
+      fill(0);
+      text("URL: "+ webURL, 50, y + spacing * 5);
     }
-  }
-  void display() {
     textFont(f);
+    textSize(35);
     fill(0);
+    // Display everything
+    text("Your Search Result is here", 250, y-10);
+    textSize(40);
+    fill(255);
+    text("Your Search Result is here", 250, y);
+  }
+}
+
+void changeState() {
+  whichLevel++;
+  if (whichLevel >1) {
+    whichLevel = 0;
   }
 }
 
@@ -106,8 +156,10 @@ class Engine {
 // Modified by me, added backspace / delete function
 void keyPressed() {
   // If the return key is pressed, save the String and clear it
+
   if (key == '\n' ) {
     saved = typing;
+    changeState();
     // A String can be cleared by setting it equal to ""
     typing = "";
   } else if (key == BACKSPACE) {
@@ -126,13 +178,32 @@ class SearchBox {
   }
   void display() {
     textFont(f);
+    textSize(35);
     fill(0);
     // Display everything
-    text("Type any name you want to search using API ", indent, 40);
-    text("Input: " + typing, indent, 190);
-    //text("Saved text: " + saved, indent, 230);
+    text("Type any name you want to search using API ", 160, 80);
+
+    textSize(40);
+    fill(255);
+    text("Type any name you want to search using API ", 100, 90);
+
+    textSize(35);
+    text("Please type: " + typing, 50, height/2);
+
+    textSize(20);
+    fill(0);
+    text("Press ENTER to view Results", width/2-130, height/2 + 150);
+
+    fill(255, 0, 0);
+    rect(width/2-100, height/2+160, 200, 60);
+    noStroke();
+
+    textSize(40);
+    fill(0);
+    text("NEXT", width/2-85, height/2 + 205);
   }
 }
+
 
 // Scroll Bar Function
 // Code by: Processing Forum User#: Chrisir
