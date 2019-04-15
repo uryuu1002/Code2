@@ -26,7 +26,7 @@ Engine engine;
 String apiKey = "OY9L7eYd91XAHZ3u4XRTAVlaAQz2nD4v";
 String query_term = "";
 String beginDate = "20120101";
-String endDate = "";
+String endDate = "20190101";
 
 void setup() {
 
@@ -51,9 +51,9 @@ void draw() {
   case 1:
     query_term = saved;
     background(90);
+    scene();
     scrollRect.display();
     scrollRect.update();
-    engine.display();
     break;
   default:
     break;
@@ -66,8 +66,8 @@ class Engine {
   Engine() {
   }
   void display() {
-    float y = 90;
-    float spacing = 100;
+    float y = 130;
+    float spacing = 50;
 
     GetRequest get = new GetRequest(
       "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + 
@@ -90,56 +90,56 @@ class Engine {
       textFont(f);
       textSize(20);
       fill(0);
-      text("Title: "+ title, 50, y);
+      text("Title: "+ title, 50, y + spacing*i);
 
       // Article Leading Paragraph
-      String leadP = element.getString("lead_paragraph");
-      //println(leadP);
-      textFont(f);
-      textSize(20);
-      fill(0);
-      text("Abstract: "+ leadP, 50, y + spacing * 2);
+      //String leadP = element.getString("lead_paragraph");
+      ////println(leadP);
+      //textFont(f);
+      //textSize(20);
+      //fill(0);
+      //text("Abstract: "+ leadP, 50, y + spacing * 2);
 
       // Publish date
-      String pubDate = element.getString("pub_date");
-      //println(pubDate);
-      textFont(f);
-      textSize(20);
-      fill(0);
-      text("Publish Date: "+ pubDate, 50, y + spacing * 3);
+      //String pubDate = element.getString("pub_date");
+      ////println(pubDate);
+      //textFont(f);
+      //textSize(20);
+      //fill(0);
+      //text("Publish Date: "+ pubDate, 50, y + spacing * 3);
 
       // Article type
-      String docType = element.getString("document_type");
+      //String docType = element.getString("document_type");
       //println(docType);
 
       // Keywords contained
-      JSONArray keywords = element.getJSONArray("keywords");
-      for (int j = 0; j < keywords.size(); j++) {
-        JSONObject element2 = keywords.getJSONObject(j);
-        String value = element2.getString("value");
-        //println(value);
-        textFont(f);
-        textSize(20);
-        fill(0);
-        text("Keywords: "+ value, 50, y + spacing * 4);
-      }
+      //JSONArray keywords = element.getJSONArray("keywords");
+      //for (int j = 0; j < keywords.size(); j++) {
+      //  JSONObject element2 = keywords.getJSONObject(j);
+      //  String value = element2.getString("value");
+      //  //println(value);
+      //  textFont(f);
+      //  textSize(20);
+      //  fill(0);
+      //  text("Keywords: "+ value, 50, y + spacing * 4);
+      //}
 
       // Article URL
-      String webURL = element.getString("web_url");
-      //println(webURL);
-      textFont(f);
-      textSize(20);
-      fill(0);
-      text("URL: "+ webURL, 50, y + spacing * 5);
+      //String webURL = element.getString("web_url");
+      ////println(webURL);
+      //textFont(f);
+      //textSize(20);
+      //fill(0);
+      //text("URL: "+ webURL, 50, y + spacing * 5);
     }
     textFont(f);
     textSize(35);
     fill(0);
     // Display everything
-    text("Your Search Result is here", 250, y-10);
+    text("Your Search Result is here", 250, 80);
     textSize(40);
     fill(255);
-    text("Your Search Result is here", 250, y);
+    text("Your Search Result is here", 250, 90);
   }
 }
 
@@ -209,6 +209,21 @@ class SearchBox {
 // Code by: Processing Forum User#: Chrisir
 // Code from: https://forum.processing.org/two/discussion/27860/in-processing-
 // how-to-add-a-scroll-bar-to-the-window
+
+void scene() {
+  pushMatrix();
+ 
+  // reading scroll bar 
+  float newYValue = scrollRect.scrollValue();  
+  translate (0, newYValue);
+ 
+  // The scene :
+     engine.display();
+  text("End of virtual canvas", 380, heightOfCanvas-16);    
+  fill(122); 
+  popMatrix();
+}
+
 void mousePressed() {
   scrollRect.mousePressedRect();
 }
