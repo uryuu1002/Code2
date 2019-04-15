@@ -5,10 +5,8 @@ ArrayList<Circle> circles = new ArrayList<Circle>();
 PVector origin;
 Mover b;
 Mover d;
-Mover e;
 float restLength;
 float restLength2;
-float restLength3;
 
 void setup() {
   size(720, 500);
@@ -16,13 +14,11 @@ void setup() {
   colorMode(HSB, 1);
   restLength = 200;
   restLength2 = 100;
-  restLength3 = 50;
   origin = new PVector (width/2, 0);
   b = new Mover (width/2, 240);
   d = new Mover(b.pos.x, b.pos.y);
-  e = new Mover(d.pos.x, d.pos.y);
 
-  for (int i = 0; i < 30; i++) {
+  for (int i = 0; i < 20; i++) {
     boolean overlapping = false;
     Circle circle = new Circle(i);
     for (int j = 0; j < circles.size(); j++) {
@@ -55,6 +51,7 @@ void draw() {
   PVector pen = new PVector (0.1, 0);
   b.applyForce(pen);
   b.applyForce(gravity);
+
   b.update();
   b.display();
 
@@ -70,42 +67,18 @@ void draw() {
   spring2.mult(-k2 * stretch2);  
   d.applyForce(spring2);
   PVector gravity2 = new PVector(0, 0.2);
-  PVector pen2 = new PVector (-0.1, 0);
+  PVector pen2 = new PVector (0.1, 0);
   d.applyForce(pen2);
   d.applyForce(gravity2);
   d.update();
   d.display();
 
-  stroke(1);
-  strokeWeight(3);
-  line(d.pos.x, d.pos.y, e.pos.x, e.pos.y);
-  PVector spring3 = PVector.sub(e.pos, d.pos);
-  float currentLength3 = spring3.mag();
-  spring3.normalize();
-  float k3 = 0.05;
-  float stretch3 = currentLength3 - restLength3;
-  spring3.mult(-k3 * stretch3);  
-  e.applyForce(spring3);
-  PVector gravity3 = new PVector(0, 0.2);
-  PVector pen3 = new PVector (0.1, 0);
-  e.applyForce(pen3);
-  e.applyForce(gravity3);
-  e.update();
-  e.display();
-
 
   for (int i = 0; i < circles.size(); i++) {
     Circle c = circles.get(i);
     PVector force = new PVector(b.pos.x, b.pos.y);
-    PVector force2 = new PVector (d.pos.x, d.pos.y);
-    PVector force3 = new PVector (e.pos.x, e.pos.y);
     force.sub(c.pos);
-    force2.sub(c.pos);
-    force3.sub(c.pos);
     float d = force.mag();
-    float d2 = force2.mag();
-    float d3 = force3.mag();
-
     if (d < (c.r/2)+(b.mass)) {
       force.normalize();
       force.mult(-2);
@@ -115,30 +88,10 @@ void draw() {
       force.mult(0.05);
       c.applyForce(force);
     }
-
-    if (d2 < (c.r/2)+(b.mass)) {
-      force2.normalize();
-      force2.mult(-2);
-      c.applyForce(force2);
-    } else {
-      force.normalize();
-      force.mult(0.05);
-      c.applyForce(force2);
-    }
-
-    if (d3 < (c.r/2)+(b.mass)) {
-      force3.normalize();
-      force3.mult(-2);
-      c.applyForce(force3);
-    } else {
-      force3.normalize();
-      force3.mult(0.05);
-      c.applyForce(force3);
-    }
   }
 
-    for (Circle c : circles) {
-      c. update();
-      c.display();
-    }
+  for (Circle c : circles) {
+    c. update();
+    c.display();
   }
+}
