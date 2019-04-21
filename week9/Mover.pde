@@ -11,7 +11,7 @@ class Mover {
   float ySteps = x1/width;
   float freqMix = song.mix.get(int(x1));
   float amplitude = song.mix.level();
-  float size = freqMix * spacing/1.5 * amplification;
+  float size = freqMix * spacing/1.5 * amplitude;
 
   // Constructor
   Mover(float x, float y) {
@@ -34,22 +34,10 @@ class Mover {
     PVector f = PVector.div(force, mass);
     acc.add(f);
   }
-  void display() { 
-    
-    pushMatrix();
-    translate(pos.x, pos.y, 0);
-    rotateX(radians(frameCount*0.3));
-    rotateY(radians(frameCount*0.5));  
-    rotateZ(radians(frameCount*0.1));
-    fill(0, 0, 0);
-    strokeWeight(3);
-    stroke(100);
-    sphereDetail(10);
-    sphere(map(size, 0, 10, 100, 120));
-    popMatrix();
+  //void display() { 
 
-    stroke(100);
-    strokeWeight(30);
-    line(origin.x, origin.y, n.pos.x, n.pos.y);
-  }
+  //  stroke(100);
+  //  strokeWeight(30);
+  //  line(origin.x, origin.y, n.pos.x, n.pos.y);
+  //}
 }

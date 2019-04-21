@@ -49,7 +49,7 @@ void draw() {
   float b = map(freqMix, -1, 1, 90, 100);
   float opacity = map(amplitude, 0, 0.4, 0, 100);
 
-  // rotating sphere
+  // physics
   PVector spring = PVector.sub(n.pos, origin);
   float currentLength = spring.mag();
   spring.normalize();
@@ -60,7 +60,6 @@ void draw() {
   PVector gravity = new PVector(0, 0.2);
   n.applyForce(gravity);
   n.update();
-  n.display();
 
 
   // sound wave
@@ -90,4 +89,17 @@ void draw() {
     offset += incr;
   }
   endShape();
+
+  //rotating spheres using physics
+  pushMatrix();
+  translate(n.pos.x, n.pos.y, n.pos.z);
+  rotateX(radians(frameCount*0.3));
+  rotateY(radians(frameCount*0.5));  
+  rotateZ(radians(frameCount*0.1));
+  fill(0, 0, 0);
+  strokeWeight(3);
+  stroke(100);
+  sphereDetail(int(map(size, 0, 10, 5, 20)));
+  sphere(map(size, 0, 10, 100, 120));
+  popMatrix();
 }
