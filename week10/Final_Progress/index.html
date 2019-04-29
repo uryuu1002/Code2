@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.9/Tone.js' ></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js' ></script>
+	<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<!-- PROJECT GOAL: CREATING A RYTHEM GAME BASED ON COMPUTATIONAL GENERATED SONGS -->
+<!-- TUTORIAL USED THUS FAR:
+	SHAI UI (https://www.youtube.com/watch?v=xBQef0fs-_Q)
+	JAKE ALBAUGH (https://www.youtube.com/watch?v=IT64QQo3jrM) -->
+
+<body>
+
+	<input id ="control" type="button" value="RIGHT">
+	<input id ="control" type="button" value="UP">
+	<input id ="control" type="button" value="LEFT">
+	<input id ="control" type="button" value="DOWN">
+
+	<div id = 'go' onClick='go()'>play</div>
+	<div id = 'editor'>
+		p1.get('hihat').start();
+		if([0,4,8,12].indexOf(idx) >=0)
+		p1.get('kick').start();
+		if([2,6,10,14].indexOf(idx) >=0)
+		p1.get('snare').start();
+
+		var chords = [
+		['C3', 'E3', 'G3'],
+		['G3', 'B3', 'D3'],
+		['A3', 'C3', 'E3'],
+		['F3', 'A3', 'C3']
+		];
+
+		var chordIndex = -1;
+		if (idx === 0) chordIndex = 0;
+		if (idx == 4) chordIndex = 1;
+		if (idx == 8) chordIndex = 2;
+		if (idx == 12) chordIndex = 3;
+
+		if (chordIndex >= 0){
+		polySynth.triggerAttackRelease(chords[chordIndex][0],'16n');
+		polySynth.triggerAttackRelease(chords[chordIndex][1],'16n','+8n');
+		polySynth.triggerAttackRelease(chords[chordIndex][2],'16n','+4n');
+
+	}
+
+</div>
+<script>
+	var editor = ace.edit('editor');
+	editor.setTheme('ace/theme/monookai');
+	editor.getSession().setMode('ace/mode/javascript');
+	editor.setOptions({fontSiez:'20pt'});
+
+	var vol = new Tone.Volume(-12).toMaster();
+	var polySynth = new Tone.PolySynth(3, Tone.FMSynth);
+
+	var reverb = new Tone.Freeverb(0.4).connect(vol);
+	var vibrato = new Tone.Vibrato(3, 0.3).connect(vol);
+
+
+	var p1 = new Tone.Players({
+		"kick":'https://cdn.jsdelivr.net/gh/Tonejs/Tone.js/examples/audio/505/kick.mp3',
+		"snare":'https://cdn.jsdelivr.net/gh/Tonejs/Tone.js/examples/audio/505/snare.mp3',
+		"hihat":'https://cdn.jsdelivr.net/gh/Tonejs/Tone.js/examples/audio/505/hh.mp3',
+
+	}, function()
+	{
+
+	});
+	polySynth.connect(vibrato);
+	p1.connect(vibrato);
+
+	function go(){
+			// polySynth.triggerAttackRelease('C4', '16n');
+			
+
+			Tone.context.latencyHint = 'fastest';
+			Tone.Transport.bpm.value= 120;
+
+			var seq = new Tone.Sequence(function(time,idx)
+			{
+				eval(editor.getValue());
+			},[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], "8n");
+
+			Tone.Transport.start('+0.2');
+			seq.start();
+		}
+
+	</script>
+</body>
+
+</html>
+
+
+
