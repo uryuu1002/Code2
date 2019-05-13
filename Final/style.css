@@ -1,0 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+
+button{
+  width: 150px;
+  height: 50px;
+  font-size:20px;
+}

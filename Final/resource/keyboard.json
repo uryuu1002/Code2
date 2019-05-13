@@ -1,0 +1,33 @@
+{ "keyboard":
+
+   [
+     { "position": { "x": 130, "y": 350 },
+       "size": {"sx": 80, "sy": 300},
+       "label": "C3" },
+
+     { "position": { "x": 220, "y": 400 },
+       "size": {"sx": 80, "sy": 300},
+       "label": "D3" },
+
+     { "position": { "x": 310, "y": 450 },
+       "size": {"sx": 80, "sy": 300},
+       "label": "E3" },
+
+     { "position": { "x": 400, "y": 500 },
+       "size": {"sx": 80, "sy": 300},
+       "label": "F3" },
+
+     { "position": { "x": 490, "y": 450 },
+       "size": {"sx": 80, "sy": 300},
+       "label": "G3" },
+
+     { "position": { "x": 580, "y": 400 },
+       "size": {"sx": 80, "sy": 300},
+       "label": "A3" },
+
+     { "position": { "x": 670, "y": 350 },
+       "size": {"sx": 80, "sy": 300},
+       "label": "B3" }
+
+     ]
+  }
